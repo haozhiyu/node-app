@@ -23,6 +23,7 @@ phases:
       - echo Pushing the Docker images...
       - docker push $REPOSITORY_URI:latest
       - $(aws ecr get-login --region us-east-1 --no-include-email)
+      - docker tag test:latest $REPOSITORY_URI_virginia:latest
       - docker push $REPOSITORY_URI_virginia:latest
       - echo Writing image definitions file...
       - printf '[{"name":"nodeapp","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
