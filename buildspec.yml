@@ -9,6 +9,7 @@ phases:
       - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
       - REPOSITORY_URI=732190852974.dkr.ecr.us-east-2.amazonaws.com/test
       - REPOSITORY_URI_virginia=732190852974.dkr.ecr.us-east-1.amazonaws.com/viginia
+      - REPOSITORY_URI_oregon=732190852974.dkr.ecr.us-west-2.amazonaws.com/oregon
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - IMAGE_TAG=build-$(echo $CODEBUILD_BUILD_ID | awk -F":" '{print $2}')
   build:
@@ -25,6 +26,9 @@ phases:
       - $(aws ecr get-login --region us-east-1 --no-include-email)
       - docker tag test:latest $REPOSITORY_URI_virginia:latest
       - docker push $REPOSITORY_URI_virginia:latest
+      - $(aws ecr get-login --region us-west-2 --no-include-email)
+      - docker tag test:latest $REPOSITORY_URI_oregon:latest
+      - docker push $REPOSITORY_URI_oregon:latest
       - echo Writing image definitions file...
       - printf '[{"name":"nodeapp","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
       - cat imagedefinitions.json 
