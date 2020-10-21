@@ -22,7 +22,7 @@ phases:
       - echo Pushing the Docker images...
       - docker push $REPOSITORY_URI:latest
       - docker push $REPOSITORY_URI:$IMAGE_TAG
-      - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
+      - $(aws ecr get-login --region us-east-1 --no-include-email)
       - docker tag 732190852974.dkr.ecr.us-east-1.amazonaws.com/viginia:latest 732190852974.dkr.ecr.us-east-1.amazonaws.com/viginia:$IMAGE_TAG
       - docker push 732190852974.dkr.ecr.us-east-1.amazonaws.com/viginia:latest
       - docker push 732190852974.dkr.ecr.us-east-1.amazonaws.com/viginia:$IMAGE_TAG
