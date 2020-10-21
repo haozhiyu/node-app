@@ -21,9 +21,9 @@ phases:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker images...
-      - docker push test:latest
+      - docker push $REPOSITORY_URI:latest
       - $(aws ecr get-login --region us-east-1 --no-include-email)
-      - docker push test:$IMAGE_TAG
+      - docker push $REPOSITORY_URI_virginia:latest
       - echo Writing image definitions file...
       - printf '[{"name":"nodeapp","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
       - cat imagedefinitions.json 
