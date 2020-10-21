@@ -8,6 +8,7 @@ phases:
       - aws --version
       - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
       - REPOSITORY_URI=732190852974.dkr.ecr.us-east-2.amazonaws.com/test
+      - REPOSITORY_URI_virginia=732190852974.dkr.ecr.us-east-1.amazonaws.com/viginia
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - IMAGE_TAG=build-$(echo $CODEBUILD_BUILD_ID | awk -F":" '{print $2}')
   build:
@@ -15,6 +16,7 @@ phases:
       - echo Build started on `date`
       - echo Building the Docker image...
       - docker build -t $REPOSITORY_URI:latest .
+      - docker build -t $REPOSITORY_URI_virginia:latest .
       - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
   post_build:
     commands:
@@ -23,9 +25,9 @@ phases:
       - docker push $REPOSITORY_URI:latest
       - docker push $REPOSITORY_URI:$IMAGE_TAG
       - $(aws ecr get-login --region us-east-1 --no-include-email)
-      - docker tag 732190852974.dkr.ecr.us-east-1.amazonaws.com/viginia:latest 732190852974.dkr.ecr.us-east-1.amazonaws.com/viginia:$IMAGE_TAG
-      - docker push 732190852974.dkr.ecr.us-east-1.amazonaws.com/viginia:latest
-      - docker push 732190852974.dkr.ecr.us-east-1.amazonaws.com/viginia:$IMAGE_TAG
+      - docker tag $REPOSITORY_URI_virginia:$IMAGE_TAG $REPOSITORY_URI_virginia:$IMAGE_TAG
+      - docker push $REPOSITORY_URI_virginia:latest
+      - docker push $REPOSITORY_URI_virginia:$IMAGE_TAG
       - echo Writing image definitions file...
       - printf '[{"name":"nodeapp","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
       - cat imagedefinitions.json 
