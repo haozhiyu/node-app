@@ -22,14 +22,14 @@ phases:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker images...
-      - docker push $REPOSITORY_URI:latest
+      - docker push test:latest
       - docker push $REPOSITORY_URI:$IMAGE_TAG
       - $(aws ecr get-login --region us-east-1 --no-include-email)
       - docker tag test:latest $REPOSITORY_URI_virginia:latest
-      - docker push $REPOSITORY_URI_virginia:latest
+      - docker push test:latest
       - $(aws ecr get-login --region us-west-2 --no-include-email)
       - docker tag test:latest $REPOSITORY_URI_oregon:latest
-      - docker push $REPOSITORY_URI_oregon:latest
+      - docker push test:latest
       - echo Writing image definitions file...
       - printf '[{"name":"nodeapp","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
       - cat imagedefinitions.json 
