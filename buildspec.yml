@@ -26,6 +26,7 @@ phases:
       - $(aws ecr get-login --region us-east-1 --no-include-email)
       - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI_virginia:$IMAGE_TAG
       - docker push $REPOSITORY_URI_virginia:$IMAGE_TAG
+      - aws imagebuilder start-image-pipeline-execution --image-pipeline-arn arn:aws:imagebuilder:us-east-2:732190852974:image-pipeline/testbuilder
       - echo Writing image definitions file...
       - printf '[{"name":"nodeapp","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
       - cat imagedefinitions.json 
