@@ -23,9 +23,9 @@ phases:
       - echo Pushing the Docker images...
       - docker push $REPOSITORY_URI:latest
       - docker push $REPOSITORY_URI:$IMAGE_TAG
-      - echo aws imagebuilder start-image-pipeline-execution --image-pipeline-arn arn:aws:imagebuilder:us-east-2:732190852974:image-pipeline/testimagebuilder
-      - echo Writing image definitions file...
-      - printf '[{"name":"nodeapp","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
-      - cat imagedefinitions.json 
-artifacts:
-    files: imagedefinitions.json
+      #- echo aws imagebuilder start-image-pipeline-execution --image-pipeline-arn arn:aws:imagebuilder:us-east-2:732190852974:image-pipeline/testimagebuilder
+      #- echo Writing image definitions file...
+      #- printf '[{"name":"nodeapp","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+      #- cat imagedefinitions.json 
+#artifacts:
+    #files: imagedefinitions.json
